@@ -1,0 +1,196 @@
+\documentclass{beamer}
+
+
+% Remove navigation bar
+% \setbeamertemplate{navigation symbols}{}
+\usepackage[sfdefault]{roboto}  %% Option 'sfdefault' only if the base font of the document is to be sans serif
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usefonttheme{structurebold}
+\usepackage{tikz}
+\usetikzlibrary{bayesnet}
+% Custom bullets
+\usepackage{pifont}
+
+% \newcommand{\topline}{
+%   \tikz[remember picture, overlay] {
+%     \draw[gray, thick] ([xshift = 1cm, yshift = -1.2cm]current page.north west)
+%              -- ([xshift = -1cm, yshift = -1.2cm, xshift = \paperwidth]current page.north west);}}
+
+\setbeamertemplate{frametitle}[default][center]
+\setbeamertemplate{navigation symbols}{}
+\setbeamerfont{footline}{series = \bfseries}
+\setbeamertemplate{footline}[page number]
+\definecolor{pantone}{RGB}{217, 30, 111}
+\makeatletter
+\setbeamertemplate{footline}
+{
+    \leavevmode%
+    \hbox{%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+            \usebeamerfont{author in head/foot}\insertshortauthor
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+            \usebeamerfont{title in head/foot}\insertshorttitle
+        \end{beamercolorbox}%
+        \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+            \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+            \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+        \end{beamercolorbox}}%
+        \vskip0pt%
+    }
+    \makeatother
+\author{Dhanesh Raj}
+\title{Center for Wireless Networks and Applications}
+
+
+\begin{document}
+% Title slide frame
+%Refer here https://latex-beamer.com/tutorials/title-page/
+\begin{frame}[plain]
+% Background image
+\begin{tikzpicture}[remember picture,overlay]
+    \node[above left,inner sep= 0pt] at (current page.south east)
+    {
+        \includegraphics[width=0.4\paperwidth]{pics/amritauniversity.eps}
+    };
+    \node[above right,inner sep=-2pt] at (current page.south west)
+    {
+        \includegraphics[width=0.65\paperwidth]{amritapuricampus.png}
+    };
+\node
+[
+    above=0.7cm,
+    align=center,
+    fill= pantone!,
+    rounded corners,
+    inner xsep=15pt,
+    inner ysep=10pt, 
+    text = white,
+    minimum width=0.9\textwidth,
+    text width=0.9\textwidth
+] (title) at (current page.center)
+{
+    \LARGE My Presentation Title  \\[5pt]
+    \small Subtitle of presentation
+};   
+% Author 
+\node[ below=0.40cm] (author) at (title.south){\Large Author 1};
+\node[ below=1.2 cm] (rollno) at (title.south){\small AM.EN.P2WNA15151};
+\node[ below= 1.7cm] (inst) at (title.south){\large Institute Name};
+% Date
+\node[below=1.5cm] (date) at (author.south){\small \today};
+\end{tikzpicture}
+\end{frame}
+\begin{frame}[t]
+    \frametitle{\color{black} \textbf{Contents}}
+    \begin{minipage}[t][0.5cm]{\textwidth}
+    \tableofcontents
+    \end{minipage}
+\end{frame}
+
+\section{Tensor Factorization}
+\begin{frame}
+\frametitle{\color{black}\textbf{Tensor Factorization}}
+\topline
+\footnotesize
+{Bayesian treatment}\footnote{\scriptsize$\mathcal{N}(\cdot)$: Gaussian/Normal distribution; $\text{Gamma}(\cdot)$: Gamma distribution.}:
+\vspace{-2em}
+\begin{columns}
+\begin{column}{0.6\textwidth}
+\vspace{-15em}
+
+\uncover<1->{\scriptsize{Suppose that \emph{the observation follows Gaussian distribution}:
+\begin{equation*}
+y_{ijt}\sim\mathcal{N}\left(\sum_{r=1}^{R}u_{ir}v_{jr}x_{tr},\tau^{-1}\right),(i,j,t)\in\Omega.
+\end{equation*}
+}
+\uncover<2->{In the Bayesian setting, we place \emph{conjugate priors} on model parameters, i.e.,
+\begin{equation*}
+\begin{aligned}
+\boldsymbol{u}_{i}&\sim\mathcal{N}\left(\boldsymbol{\mu}_{u},\Lambda_{u}^{-1}\right),i=1,2,\ldots,M, \\
+\boldsymbol{v}_{j}&\sim\mathcal{N}\left(\boldsymbol{\mu}_{v},\Lambda_{v}^{-1}\right),j=1,2,\ldots,N, \\
+\boldsymbol{x}_{t}&\sim\mathcal{N}\left(\boldsymbol{\mu}_{x},\Lambda_{x}^{-1}\right),t=1,2,\ldots,T, \\
+\tau&\sim\text{Gamma}(\alpha,\beta). \\
+\end{aligned}
+\end{equation*}
+}
+}
+\end{column}
+\begin{column}[t]{0.35\textwidth}
+\begin{tikzpicture}
+\uncover<1->{\node[circle,draw=black,fill=gray!20,inner sep=0pt,minimum size=0.8cm] (obs) at (2,-1) {\small{$y_{ijt}$}};
+\node[circle,draw=black,fill=green!10] (ui) at (0.8,0) {\small{$\boldsymbol{u}_{i}$}};
+\node[circle,draw=black,fill=green!10] (vj) at (2,1) {\small{$\boldsymbol{v}_{j}$}};
+\node[circle,draw=black,fill=green!10] (xt) at (3.2,0) {\small{$\boldsymbol{x}_{t}$}};
+\node[circle,draw=black,fill=green!10] (tau) at (4.2,-1) {\small{$\tau$}};
+\path[draw=black,->] (ui) edge (obs);
+\path[draw=black,->] (vj) edge (obs);
+\path[draw=black,->] (xt) edge (obs);
+\path[draw=black,->] (tau) edge (obs);
+\node [text width=0.8cm] (m) at (1,-1.2) {\small{$M$}};
+\plate[] {plate1} {(obs)(ui)(m)} { };
+\node [text width=0.9cm] (n) at (2,-2.3) {\small{$N$}};
+\plate[] {plate2} {(obs)(vj)(n)} { };
+\node [text width=0.2cm] (f) at (3.2,-1.3) {\small{$T$}};
+\plate[] {plate3} {(obs)(xt)(f)} { };
+}
+\uncover<2->{\node[circle,draw=black,fill=red!10,inner sep=0pt,minimum size=0.7cm] (muv) at (1.3,2.2) {\small{$\boldsymbol{\mu}_{v}$}};
+\node[circle,draw=black,fill=red!10,inner sep=0pt,minimum size=0.7cm] (lambdav) at (2.7,2.2) {\small{$\Lambda_{v}$}};
+\node[text width=0.6cm] (gamma) at (4.2,0) {\small{$\alpha,\beta$}};
+\node[text width=0.4cm] (mu0) at (1.3,3.2) {\small{$\boldsymbol{\mu}_{0}$}};
+\node[text width=0.9cm] (wnu0) at (2.7,3.2) {\small{$W_{0},\nu_{0}$}};
+\node[text width=0.6cm] (cdots1) at (0.8,0.8) {\LARGE\color{red!50}{$\cdots$}};
+\node[text width=0.6cm] (cdots2) at (3.2,0.8) {\LARGE\color{red!50}{$\cdots$}};
+\path[draw=black,->] (muv) edge (vj);
+\path[draw=black,->] (lambdav) edge (vj);
+\path[draw=black,->] (lambdav) edge (muv);
+\path[draw=black,->] (mu0) edge (muv);
+\path[draw=black,->] (wnu0) edge (lambdav);
+\path[draw=black,->] (gamma) edge (tau);
+}
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+\begin{frame}
+\section{List}
+\frametitle{List}
+\begin{columns}
+\column{.5\textwidth}
+  \begin{itemize}
+  \item First item.
+  \item Second item.
+  \item Third item.
+  \end{itemize}
+\setbeamertemplate{itemize items}[square]
+  \begin{itemize}
+  \item First item.
+  \item Second item.
+  \item Third item.
+  \end{itemize}
+\column{.5\textwidth}
+\setbeamertemplate{itemize items}[circle]
+  \begin{itemize}
+  \item First item.
+  \item Second item.
+  \item Third item.
+  \end{itemize}
+\setbeamertemplate{itemize items}[ball]
+  \begin{itemize}
+  \item First item.
+  \item Second item.
+  \item Third item.
+  \end{itemize}
+\end{columns}
+\end{frame}
+\begin{frame}{Pifont symbols for Beamer lists}
+\begin{itemize}
+    \item[\ding{51}] Code 51
+    \item[\ding{56}] Code 56
+    \item[\ding{43}] Code 43
+    \item[\ding{118}] Code 118
+    \item[\ding{170}] Code 170
+\end{itemize}
+\end{frame}
+\end{document}
